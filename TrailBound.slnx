@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TrailBound.Application/TrailBound.Application.csproj" />
+  <Project Path="TrailBound.Domain/TrailBound.Domain.csproj" />
+  <Project Path="TrailBound.Infrastructure/TrailBound.Infrastructure.csproj" />
+  <Project Path="TrailBound/TrailBound.Api.csproj" />
+</Solution>
