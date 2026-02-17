@@ -1,4 +1,5 @@
 using Scalar.AspNetCore;
+using TrailBound.Infrastructure.Persistence.DatabaseContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,5 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
-
-app.MapGet("/", () => "Hello World!");
 
 app.Run();
