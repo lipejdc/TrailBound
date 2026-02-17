@@ -16,4 +16,7 @@ public class Activity
     public required string GpxFilePath { get; set; }
     public required string KomootUrl { get; set; }
     public required ActivityStatus Status { get; set; }
+
+    public int? TripId { get; set; } //Optional foreign key
+    public Trip? Trip { get; set; } //Navigation property
 }
