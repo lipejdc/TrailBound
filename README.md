@@ -11,7 +11,7 @@ The project is built with **C#/.NET**, **ASP.NET Core Web API**, and **Entity Fr
 - **C# / .NET 10**  
 - **ASP.NET Core Web API**  
 - **Entity Framework Core**  
-- **SQL Server** (or any EF Core compatible database)  
+- **PostgresSQL**
 
 ---
 
