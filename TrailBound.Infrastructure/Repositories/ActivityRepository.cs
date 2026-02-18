@@ -68,26 +68,26 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
 
     public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto)
     {
-        Location location = new
-            (
-                country: activityDto.Country,
-                city: activityDto.City,
-                region: activityDto.Region
-            );
+        Location location = new()
+        {
+            Country = activityDto.Country,
+            City = activityDto.City,
+            Region = activityDto.Region
+        };
 
         var type = EnumHelpers.ParseActivityType(activityDto.Type);
         var status = EnumHelpers.ParseActivityStatus(activityDto.Status);
 
 
-        Activity activity = new
-            (
-                title: activityDto.Title,
-                type: type,
-                status: status,
-                date: DateTime.SpecifyKind(activityDto.Date, DateTimeKind.Utc),
-                distanceInKm: activityDto.DistanceInKm,
-                location: location
-            );
+        Activity activity = new()
+        {
+            Title = activityDto.Title,
+            Type = type,
+            Status = status,
+            Date = DateTime.SpecifyKind(activityDto.Date, DateTimeKind.Utc),
+            DistanceInKm = activityDto.DistanceInKm,
+            Location = location
+        };
 
         if (!string.IsNullOrEmpty(activityDto.TripName))
         {
@@ -122,7 +122,7 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
     public async Task<bool> DeleteActivityAsync(int id)
     {
         var activity = await _context.Activities.FindAsync(id);
-        
+
         if (activity == null)
         {
             return false;
@@ -133,18 +133,101 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         return true;
     }
 
-    public Task<ActivityDto?> EditActivityAsync(int id, ActivityDto updatedActivity)
+    public async Task<ActivityDto?> EditActivityAsync(int id, UpdateActivityDto updatedActivity)
     {
-        throw new NotImplementedException();
+        var activity = await _context.Activities.FindAsync(id);
+
+        if (activity == null)
+        {
+            return null;
+        }
+
+        activity.Title = updatedActivity.Title ?? activity.Title;
+        activity.Type = !string.IsNullOrEmpty(updatedActivity.Type)
+            ? EnumHelpers.ParseActivityType(updatedActivity.Type)
+            : activity.Type;
+        activity.Status = !string.IsNullOrEmpty(updatedActivity.Status)
+            ? EnumHelpers.ParseActivityStatus(updatedActivity.Status)
+            : activity.Status;
+        activity.Date = updatedActivity.Date ?? activity.Date;
+        activity.DistanceInKm = updatedActivity.DistanceInKm ?? activity.DistanceInKm;
+        activity.GpxFilePath = updatedActivity.GpxFilePath ?? activity.GpxFilePath;
+        activity.KomootUrl = updatedActivity.KomootUrl ?? activity.KomootUrl;
+        activity.Location.Country = updatedActivity.Country ?? activity.Location.Country;
+        activity.Location.City = updatedActivity.City ?? activity.Location.City;
+        activity.Location.Region = updatedActivity.Region ?? activity.Location.Region;
+
+        await _context.SaveChangesAsync();
+
+        return new ActivityDto
+        {
+            Id = activity.Id,
+            Title = activity.Title,
+            Type = activity.Type.ToString(),
+            Status = activity.Status.ToString(),
+            Date = activity.Date,
+            DistanceInKm = activity.DistanceInKm,
+            GpxFilePath = activity.GpxFilePath,
+            KomootUrl = activity.KomootUrl,
+            Country = activity.Location.Country,
+            City = activity.Location.City,
+            Region = activity.Location.Region,
+        };
     }
 
-    public Task<List<ActivityDto>> GetActivitiesByMonthAsync(int year, int month)
+    public async Task<List<ActivityDto>> GetActivitiesByMonthAsync(int year, int month)
     {
-        throw new NotImplementedException();
+        var activities = await _context.Activities
+        .Where(a => a.Date.Year == year && a.Date.Month == month)
+        .Select(a => new ActivityDto
+        {
+            Id = a.Id,
+            Title = a.Title,
+            Type = a.Type.ToString(),
+            Status = a.Status.ToString(),
+            Date = a.Date,
+            Duration = a.Duration,
+            DistanceInKm = a.DistanceInKm,
+            ElevationGain = a.ElevationGain,
+            ElevationLoss = a.ElevationLoss,
+            City = a.Location.City,
+            Region = a.Location.Region,
+            Country = a.Location.Country,
+            GpxFilePath = a.GpxFilePath,
+            KomootUrl = a.KomootUrl,
+            TripId = a.TripId,
+            TripName = a.Trip != null ? a.Trip.Name : null
+        })
+        .ToListAsync();
+
+        return activities;
     }
 
-    public Task<List<ActivityDto>> GetActivitiesByYearAsync(int year)
+    public async Task<List<ActivityDto>> GetActivitiesByYearAsync(int year)
     {
-        throw new NotImplementedException();
+        var activities = await _context.Activities
+        .Where(a => a.Date.Year == year)
+        .Select(a => new ActivityDto
+        {
+            Id = a.Id,
+            Title = a.Title,
+            Type = a.Type.ToString(),
+            Status = a.Status.ToString(),
+            Date = a.Date,
+            Duration = a.Duration,
+            DistanceInKm = a.DistanceInKm,
+            ElevationGain = a.ElevationGain,
+            ElevationLoss = a.ElevationLoss,
+            City = a.Location.City,
+            Region = a.Location.Region,
+            Country = a.Location.Country,
+            GpxFilePath = a.GpxFilePath,
+            KomootUrl = a.KomootUrl,
+            TripId = a.TripId,
+            TripName = a.Trip != null ? a.Trip.Name : null
+        })
+        .ToListAsync();
+
+        return activities;
     }
 }

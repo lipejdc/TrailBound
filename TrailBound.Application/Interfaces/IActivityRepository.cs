@@ -9,7 +9,7 @@ public interface IActivityRepository
     Task<List<ActivityDto>> GetActivitiesByMonthAsync(int year, int month);
     Task<ActivityDto?> GetActivityByIdAsync(int id);
     Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto);
-    Task<ActivityDto?> EditActivityAsync(int id, ActivityDto updatedActivity);
+    Task<ActivityDto?> EditActivityAsync(int id, UpdateActivityDto updatedActivity);
     Task<bool> DeleteActivityAsync(int id);
 
 }

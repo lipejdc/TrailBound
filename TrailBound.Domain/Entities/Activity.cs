@@ -9,58 +9,21 @@ namespace TrailBound.Domain.Entities;
 
 public class Activity
 {
-    public int Id { get; private set; }
-    public string Title { get; private set; }
-    public ActivityType Type { get; private set; }
-    public Location Location { get; private set; }
-    public DateTime Date { get; private set; }
-    public TimeSpan Duration { get; private set; }
-    public double DistanceInKm { get; private set; }
-    public int ElevationGain { get; private set; }
-    public int ElevationLoss { get; private set; }
-    public string? GpxFilePath { get; private set; }
-    public string? KomootUrl { get; private set; }
-    public ActivityStatus Status { get; private set; }
+    public int Id { get; set; }
+    public string Title { get; set; } = null!;
+    public ActivityType Type { get; set; }
+    public Location Location { get; set; } = null!;
+    public DateTime Date { get; set; }
+    public TimeSpan Duration { get; set; }
+    public double DistanceInKm { get; set; }
+    public int ElevationGain { get; set; }
+    public int ElevationLoss { get; set; }
+    public string? GpxFilePath { get; set; }
+    public string? KomootUrl { get; set; }
+    public ActivityStatus Status { get; set; }
 
-    public int? TripId { get; private set; } //Optional foreign key
-    public Trip? Trip { get; private set; } //Navigation property
-
-    private Activity() //Private constructor for EF Core
-    { 
-        Title = null!; 
-        Location = null!; 
-    } 
-    
-    public Activity
-        (
-        string title, 
-        ActivityType type, 
-        Location location, 
-        DateTime date, 
-        double distanceInKm,
-        ActivityStatus status
-        )
-    {
-
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            throw new ArgumentException("Title cannot be empty!", nameof(title));
-        }
-
-        ArgumentNullException.ThrowIfNull(location);
-
-        if (distanceInKm < 0)
-        {
-            throw new ArgumentOutOfRangeException(nameof(distanceInKm), "Distance cannot be negative!");
-        }
-
-        Title = title;
-        Type = type;
-        Location = location;
-        Date = date;
-        DistanceInKm = distanceInKm;
-        Status = status;
-    }
+    public int? TripId { get; set; } //Optional foreign key
+    public Trip? Trip { get; set; } //Navigation property
 
     //Method to assign a trip
     public void AssignActivityToTrip(Trip trip)

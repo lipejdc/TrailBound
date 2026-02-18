@@ -3,17 +3,17 @@
 public class ActivityDto
 {
     public int Id { get; set; } //Needed for editing, deleting, navigation
-    public required string Title { get; set; }
-    public required string Type { get; set; }
-    public required string Status { get; set; }
-    public required DateTime Date { get; set; }
+    public string Title { get; set; } = null!;
+    public string Type { get; set; } = null!;
+    public string Status { get; set; } = null!;
+    public DateTime Date { get; set; }
     public TimeSpan Duration { get; set; }
-    public required double DistanceInKm { get; set; }
+    public double DistanceInKm { get; set; }
     public int ElevationGain { get; set; }
     public int ElevationLoss { get; set; }
     
     //Location flattened
-    public required string Country { get; set; }
+    public string Country { get; set; } = null!;
     public string? City { get; set; }
     public string? Region { get; set; }
 
