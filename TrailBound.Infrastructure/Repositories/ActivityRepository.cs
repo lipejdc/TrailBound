@@ -1,11 +1,11 @@
-﻿using TrailBound.Application.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using TrailBound.Application.Dtos;
 using TrailBound.Application.Interfaces;
-using TrailBound.Infrastructure.Persistence.DatabaseContext;
-using Microsoft.EntityFrameworkCore;
 using TrailBound.Domain.Entities;
 using TrailBound.Domain.Enums;
+using TrailBound.Infrastructure.Persistence.DatabaseContext;
 
-namespace TrailBound.Infrastructure;
+namespace TrailBound.Infrastructure.Repositories;
 
 public class ActivityRepository(ApplicationDbContext context) : IActivityRepository
 {
@@ -32,7 +32,7 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
                 TripId = a.TripId,
                 TripName = a.Trip != null ? a.Trip.Name : null
             })
-            .ToListAsync();  
+            .ToListAsync();
 
         return activities;
     }
@@ -66,27 +66,30 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
 
     public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto)
     {
-        Activity activity = new()
-        {
-            Title = activityDto.Title,
-            Type = Enum.Parse<ActivityType>(activityDto.Type, ignoreCase: true),
-            Status = Enum.Parse<ActivityStatus>(activityDto.Status, ignoreCase: true),
-            Date = DateTime.SpecifyKind(activityDto.Date, DateTimeKind.Utc),
-            DistanceInKm = activityDto.DistanceInKm,
-            Location = new()
-            {
-                Country = activityDto.Country,
-                City = activityDto.City,
-                Region = activityDto.Region
-            }
-        };
+        Location location = new
+            (
+                country: activityDto.Country,
+                city: activityDto.City,
+                region: activityDto.Region
+            );
+
+
+        Activity activity = new
+            (
+                title: activityDto.Title,
+                type: Enum.Parse<ActivityType>(activityDto.Type, ignoreCase: true),
+                status: Enum.Parse<ActivityStatus>(activityDto.Status, ignoreCase: true),
+                date: DateTime.SpecifyKind(activityDto.Date, DateTimeKind.Utc),
+                distanceInKm: activityDto.DistanceInKm,
+                location: location
+            );
 
         if (!string.IsNullOrEmpty(activityDto.TripName))
         {
             var trip = await _context.Trips.FirstOrDefaultAsync(t => t.Name == activityDto.TripName);
             if (trip != null)
             {
-                activity.TripId = trip.Id;
+                activity.AssignActivityToTrip(trip); //Sets Trip and TripId internally
             }
         }
 

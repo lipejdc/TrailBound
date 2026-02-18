@@ -1,7 +1,7 @@
 using Scalar.AspNetCore;
 using TrailBound.Application.Interfaces;
-using TrailBound.Infrastructure;
 using TrailBound.Infrastructure.Persistence.DatabaseContext;
+using TrailBound.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
