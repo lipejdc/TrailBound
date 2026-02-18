@@ -4,7 +4,7 @@ public class CreateActivityDto
 {
     public required string Title { get; set; }
     public required string Type { get; set; }
-    public required string Status { get; set; } = null!;
+    public required string Status { get; set; }
     public required DateTime Date { get; set; }
     public required double DistanceInKm { get; set; }
 

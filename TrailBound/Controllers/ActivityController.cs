@@ -30,4 +30,17 @@ public class ActivityController(IActivityRepository activityRepository) : Contro
         var activity = await _activityRepository.CreateActivityAsync(createActivityDto);
         return CreatedAtAction(nameof(GetActivityById), new { id = activity.Id }, activity);
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteActivity(int id)
+    {
+        var activity = await _activityRepository.DeleteActivityAsync(id);
+
+        if (!activity)
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
 }

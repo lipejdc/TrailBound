@@ -10,6 +10,6 @@ public interface IActivityRepository
     Task<ActivityDto?> GetActivityByIdAsync(int id);
     Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto);
     Task<ActivityDto?> EditActivityAsync(int id, ActivityDto updatedActivity);
-    Task<bool> DeleteActivity(int id);
+    Task<bool> DeleteActivityAsync(int id);
 
 }

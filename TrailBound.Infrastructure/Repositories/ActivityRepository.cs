@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrailBound.Application.Dtos;
+using TrailBound.Application.Helpers;
 using TrailBound.Application.Interfaces;
 using TrailBound.Domain.Entities;
-using TrailBound.Domain.Enums;
 using TrailBound.Infrastructure.Persistence.DatabaseContext;
 
 namespace TrailBound.Infrastructure.Repositories;
@@ -19,6 +19,7 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
                 Id = a.Id,
                 Title = a.Title,
                 Type = a.Type.ToString(),
+                Status = a.Status.ToString(),
                 Date = a.Date,
                 Duration = a.Duration,
                 DistanceInKm = a.DistanceInKm,
@@ -48,6 +49,7 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
             Id = activity.Id,
             Title = activity.Title,
             Type = activity.Type.ToString(),
+            Status = activity.Status.ToString(),
             Date = activity.Date,
             Duration = activity.Duration,
             DistanceInKm = activity.DistanceInKm,
@@ -73,12 +75,15 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
                 region: activityDto.Region
             );
 
+        var type = EnumHelpers.ParseActivityType(activityDto.Type);
+        var status = EnumHelpers.ParseActivityStatus(activityDto.Status);
+
 
         Activity activity = new
             (
                 title: activityDto.Title,
-                type: Enum.Parse<ActivityType>(activityDto.Type, ignoreCase: true),
-                status: Enum.Parse<ActivityStatus>(activityDto.Status, ignoreCase: true),
+                type: type,
+                status: status,
                 date: DateTime.SpecifyKind(activityDto.Date, DateTimeKind.Utc),
                 distanceInKm: activityDto.DistanceInKm,
                 location: location
@@ -114,9 +119,18 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         return resultDto;
     }
 
-    public Task<bool> DeleteActivity(int id)
+    public async Task<bool> DeleteActivityAsync(int id)
     {
-        throw new NotImplementedException();
+        var activity = await _context.Activities.FindAsync(id);
+        
+        if (activity == null)
+        {
+            return false;
+        }
+
+        _context.Activities.Remove(activity);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public Task<ActivityDto?> EditActivityAsync(int id, ActivityDto updatedActivity)
