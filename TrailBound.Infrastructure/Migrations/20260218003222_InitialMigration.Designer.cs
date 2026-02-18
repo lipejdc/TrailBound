@@ -12,7 +12,7 @@ using TrailBound.Infrastructure.Persistence.DatabaseContext;
 namespace TrailBound.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260217225525_InitialMigration")]
+    [Migration("20260218003222_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -49,11 +49,9 @@ namespace TrailBound.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("GpxFilePath")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("KomootUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Status")

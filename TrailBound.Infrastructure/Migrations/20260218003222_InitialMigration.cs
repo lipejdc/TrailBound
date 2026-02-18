@@ -45,8 +45,8 @@ namespace TrailBound.Infrastructure.Migrations
                     DistanceInKm = table.Column<double>(type: "double precision", nullable: false),
                     ElevationGain = table.Column<int>(type: "integer", nullable: false),
                     ElevationLoss = table.Column<int>(type: "integer", nullable: false),
-                    GpxFilePath = table.Column<string>(type: "text", nullable: false),
-                    KomootUrl = table.Column<string>(type: "text", nullable: false),
+                    GpxFilePath = table.Column<string>(type: "text", nullable: true),
+                    KomootUrl = table.Column<string>(type: "text", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     TripId = table.Column<int>(type: "integer", nullable: true)
                 },

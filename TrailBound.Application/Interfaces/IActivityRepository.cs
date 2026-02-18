@@ -8,7 +8,7 @@ public interface IActivityRepository
     Task<List<ActivityDto>> GetActivitiesByYearAsync(int year);
     Task<List<ActivityDto>> GetActivitiesByMonthAsync(int year, int month);
     Task<ActivityDto?> GetActivityByIdAsync(int id);
-    Task<ActivityDto> CreateActivityAsync(ActivityDto activityDto);
+    Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto);
     Task<ActivityDto?> EditActivityAsync(int id, ActivityDto updatedActivity);
     Task<bool> DeleteActivity(int id);
 

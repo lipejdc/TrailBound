@@ -18,8 +18,8 @@ public class ActivityDto
     public string? Region { get; set; }
 
     //Media / routes
-    public string GpxFilePath { get; set; } = null!;
-    public string KomootUrl { get; set; } = null!;
+    public string? GpxFilePath { get; set; } = null!;
+    public string? KomootUrl { get; set; } = null!;
 
     //Optional trip info
     public int? TripId { get; set; } //Optional for linking to a trip

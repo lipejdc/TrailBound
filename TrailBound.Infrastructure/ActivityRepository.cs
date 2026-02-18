@@ -2,6 +2,8 @@
 using TrailBound.Application.Interfaces;
 using TrailBound.Infrastructure.Persistence.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
+using TrailBound.Domain.Entities;
+using TrailBound.Domain.Enums;
 
 namespace TrailBound.Infrastructure;
 
@@ -35,9 +37,78 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         return activities;
     }
 
-    public Task<ActivityDto> CreateActivityAsync(ActivityDto activityDto)
+    public async Task<ActivityDto?> GetActivityByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var activity = await _context.Activities.FindAsync(id);
+
+        if (activity == null) return null;
+
+        var dto = new ActivityDto
+        {
+            Id = activity.Id,
+            Title = activity.Title,
+            Type = activity.Type.ToString(),
+            Date = activity.Date,
+            Duration = activity.Duration,
+            DistanceInKm = activity.DistanceInKm,
+            ElevationGain = activity.ElevationGain,
+            ElevationLoss = activity.ElevationLoss,
+            GpxFilePath = activity.GpxFilePath,
+            KomootUrl = activity.KomootUrl,
+            TripName = activity.Trip?.Name,
+            City = activity.Location.City,
+            Region = activity.Location.Region,
+            Country = activity.Location.Country
+        };
+
+        return dto;
+    }
+
+    public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto)
+    {
+        Activity activity = new()
+        {
+            Title = activityDto.Title,
+            Type = Enum.Parse<ActivityType>(activityDto.Type, ignoreCase: true),
+            Status = Enum.Parse<ActivityStatus>(activityDto.Status, ignoreCase: true),
+            Date = DateTime.SpecifyKind(activityDto.Date, DateTimeKind.Utc),
+            DistanceInKm = activityDto.DistanceInKm,
+            Location = new()
+            {
+                Country = activityDto.Country,
+                City = activityDto.City,
+                Region = activityDto.Region
+            }
+        };
+
+        if (!string.IsNullOrEmpty(activityDto.TripName))
+        {
+            var trip = await _context.Trips.FirstOrDefaultAsync(t => t.Name == activityDto.TripName);
+            if (trip != null)
+            {
+                activity.TripId = trip.Id;
+            }
+        }
+
+        _context.Activities.Add(activity);
+        await _context.SaveChangesAsync();
+
+        //Map entity → ActivityDto for returning
+        var resultDto = new ActivityDto
+        {
+            Id = activity.Id,
+            Title = activity.Title,
+            Type = activity.Type.ToString(),
+            Status = activity.Status.ToString(),
+            Date = activity.Date,
+            DistanceInKm = activity.DistanceInKm,
+            Country = activity.Location.Country,
+            City = activity.Location.City,
+            Region = activity.Location.Region,
+            TripName = activity.Trip?.Name
+        };
+
+        return resultDto;
     }
 
     public Task<bool> DeleteActivity(int id)
@@ -56,11 +127,6 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
     }
 
     public Task<List<ActivityDto>> GetActivitiesByYearAsync(int year)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<ActivityDto?> GetActivityByIdAsync(int id)
     {
         throw new NotImplementedException();
     }

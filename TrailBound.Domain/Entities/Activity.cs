@@ -4,7 +4,7 @@ namespace TrailBound.Domain.Entities;
 
 public class Activity
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     public required string Title { get; set; }
     public required ActivityType Type { get; set; }
     public required Location Location { get; set; }
@@ -13,8 +13,8 @@ public class Activity
     public double DistanceInKm { get; set; }
     public int ElevationGain { get; set; }
     public int ElevationLoss { get; set; }
-    public required string GpxFilePath { get; set; }
-    public required string KomootUrl { get; set; }
+    public string? GpxFilePath { get; set; }
+    public string? KomootUrl { get; set; }
     public required ActivityStatus Status { get; set; }
 
     public int? TripId { get; set; } //Optional foreign key

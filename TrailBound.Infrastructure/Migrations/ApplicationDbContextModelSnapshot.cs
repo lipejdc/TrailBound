@@ -46,11 +46,9 @@ namespace TrailBound.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("GpxFilePath")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("KomootUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
