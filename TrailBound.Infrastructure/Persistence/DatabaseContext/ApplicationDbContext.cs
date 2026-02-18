@@ -15,5 +15,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         //Tells EF Core that Location is a value object owned by Activity
         modelBuilder.Entity<Activity>()
             .OwnsOne(a => a.Location);
+
+        //Store the ActivityType enum as a string in the DB
+        modelBuilder.Entity<Activity>()
+            .Property(a => a.Type)
+            .HasConversion<string>();
+
+        //Store the ActivityStatus enum as a string in the DB
+        modelBuilder.Entity<Activity>()
+            .Property(a => a.Status)
+            .HasConversion<string>();
     }
 }

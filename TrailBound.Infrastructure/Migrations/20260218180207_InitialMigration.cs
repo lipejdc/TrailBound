@@ -36,7 +36,7 @@ namespace TrailBound.Infrastructure.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     Location_City = table.Column<string>(type: "text", nullable: true),
                     Location_Region = table.Column<string>(type: "text", nullable: true),
                     Location_Country = table.Column<string>(type: "text", nullable: false),
@@ -47,7 +47,7 @@ namespace TrailBound.Infrastructure.Migrations
                     ElevationLoss = table.Column<int>(type: "integer", nullable: false),
                     GpxFilePath = table.Column<string>(type: "text", nullable: true),
                     KomootUrl = table.Column<string>(type: "text", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     TripId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>

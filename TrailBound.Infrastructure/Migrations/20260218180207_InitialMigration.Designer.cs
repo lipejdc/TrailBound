@@ -12,7 +12,7 @@ using TrailBound.Infrastructure.Persistence.DatabaseContext;
 namespace TrailBound.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260218003222_InitialMigration")]
+    [Migration("20260218180207_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -54,8 +54,9 @@ namespace TrailBound.Infrastructure.Migrations
                     b.Property<string>("KomootUrl")
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -64,8 +65,9 @@ namespace TrailBound.Infrastructure.Migrations
                     b.Property<int?>("TripId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer");
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
