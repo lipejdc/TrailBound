@@ -3,32 +3,33 @@ using TrailBound.Domain.Enums;
 
 namespace TrailBound.Application.Dtos;
 
-public class ReadActivityDto
+public record ReadActivityDto
 {
-    public int Id { get; set; } //Needed for editing, deleting, navigation
-    public string Title { get; set; } = null!;
+    public int Id { get; init; }
+    public string Title { get; init; } = null!;
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ActivityType Type { get; set; }
+    public ActivityType Type { get; init; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ActivityStatus Status { get; set; }
-    public DateTimeOffset Date { get; set; }
-    public TimeSpan Duration { get; set; }
-    public double DistanceInKm { get; set; }
-    public int ElevationGain { get; set; }
-    public int ElevationLoss { get; set; }
-    
-    //Location flattened
-    public string Country { get; set; } = null!;
-    public string? City { get; set; }
-    public string? Region { get; set; }
+    public ActivityStatus Status { get; init; }
 
-    //Media / routes
-    public string? GpxFilePath { get; set; }
-    public string? KomootUrl { get; set; }
+    public DateTimeOffset Date { get; init; }
+    public TimeSpan Duration { get; init; }
+    public double DistanceInKm { get; init; }
+    public int ElevationGain { get; init; }
+    public int ElevationLoss { get; init; }
 
-    //Optional trip info
-    public int? TripId { get; set; } //Optional for linking to a trip
-    public string? TripName { get; set; } //Optional convenience
+    // Location flattened
+    public string Country { get; init; } = null!;
+    public string? City { get; init; }
+    public string? Region { get; init; }
+
+    // Media / routes
+    public string? GpxFilePath { get; init; }
+    public string? KomootUrl { get; init; }
+
+    // Optional trip info
+    public int? TripId { get; init; }
+    public string? TripName { get; init; }
 }

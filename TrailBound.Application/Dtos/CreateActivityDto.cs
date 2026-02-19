@@ -4,35 +4,33 @@ using TrailBound.Domain.Enums;
 
 namespace TrailBound.Application.Dtos;
 
-public class CreateActivityDto
+public record CreateActivityDto
 {
     [Required(ErrorMessage = "Title is required")]
-    public string Title { get; set; } = null!;
+    public string Title { get; init; } = null!;
 
     [Required(ErrorMessage = "Type is required")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ActivityType Type { get; set; }
+    public ActivityType Type { get; init; }
 
     [Required(ErrorMessage = "Status is required")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ActivityStatus Status { get; set; }
+    public ActivityStatus Status { get; init; }
 
     [Required(ErrorMessage = "Date is required")]
-    public DateTimeOffset Date { get; set; }
+    public DateTimeOffset Date { get; init; }
 
     [Required(ErrorMessage = "DistanceInKm is required")]
     [Range(0, double.MaxValue, ErrorMessage = "Distance must be positive")]
-    public double DistanceInKm { get; set; }
-    public string? GpxFilePath { get; set; }
-    public string? KomootUrl { get; set; }
+    public double DistanceInKm { get; init; }
 
-    //Location flattened
+    public string? GpxFilePath { get; init; }
+    public string? KomootUrl { get; init; }
 
     [Required(ErrorMessage = "Country is required")]
-    public string Country { get; set; } = null!;
-    public string? City { get; set; }
-    public string? Region { get; set; }
+    public string Country { get; init; } = null!;
+    public string? City { get; init; }
+    public string? Region { get; init; }
 
-    //Optional trip info
-    public string? TripName { get; set; }
+    public string? TripName { get; init; }
 }

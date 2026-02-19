@@ -4,27 +4,29 @@ using TrailBound.Domain.Enums;
 
 namespace TrailBound.Application.Dtos;
 
-public class UpdateActivityDto
+public record UpdateActivityDto
 {
-    public string? Title { get; set; }
+    public string? Title { get; init; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ActivityType? Type { get; set; }
+    public ActivityType? Type { get; init; }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ActivityStatus? Status { get; set; }
-    public DateTimeOffset? Date { get; set; }
+    public ActivityStatus? Status { get; init; }
+
+    public DateTimeOffset? Date { get; init; }
 
     [Range(0, double.MaxValue, ErrorMessage = "Distance must be positive")]
-    public double? DistanceInKm { get; set; }
-    public string? GpxFilePath { get; set; }
-    public string? KomootUrl { get; set; }
+    public double? DistanceInKm { get; init; }
 
-    //Location flattened
-    public string? Country { get; set; }
-    public string? City { get; set; }
-    public string? Region { get; set; }
+    public string? GpxFilePath { get; init; }
+    public string? KomootUrl { get; init; }
 
-    //Optional trip info
-    public string? TripName { get; set; } //Optional convenience
+    // Location flattened
+    public string? Country { get; init; }
+    public string? City { get; init; }
+    public string? Region { get; init; }
+
+    // Optional trip info
+    public string? TripName { get; init; }
 }
