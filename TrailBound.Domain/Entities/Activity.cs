@@ -13,7 +13,7 @@ public class Activity
     public string Title { get; set; } = null!;
     public ActivityType Type { get; set; }
     public Location Location { get; set; } = null!;
-    public DateTime Date { get; set; }
+    public DateTimeOffset Date { get; set; }
     public TimeSpan Duration { get; set; }
     public double DistanceInKm { get; set; }
     public int ElevationGain { get; set; }

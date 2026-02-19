@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrailBound.Application.Dtos;
-using TrailBound.Application.Helpers;
 using TrailBound.Application.Interfaces;
 using TrailBound.Domain.Entities;
 using TrailBound.Infrastructure.Persistence.DatabaseContext;
@@ -11,15 +10,15 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task<List<ActivityDto>> GetActivitiesAsync()
+    public async Task<List<ReadActivityDto>> GetActivitiesAsync()
     {
         var activities = await _context.Activities
-            .Select(a => new ActivityDto
+            .Select(a => new ReadActivityDto
             {
                 Id = a.Id,
                 Title = a.Title,
-                Type = a.Type.ToString(),
-                Status = a.Status.ToString(),
+                Type = a.Type,
+                Status = a.Status,
                 Date = a.Date,
                 Duration = a.Duration,
                 DistanceInKm = a.DistanceInKm,
@@ -38,18 +37,18 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         return activities;
     }
 
-    public async Task<ActivityDto?> GetActivityByIdAsync(int id)
+    public async Task<ReadActivityDto?> GetActivityByIdAsync(int id)
     {
         var activity = await _context.Activities.FindAsync(id);
 
         if (activity == null) return null;
 
-        var dto = new ActivityDto
+        var dto = new ReadActivityDto
         {
             Id = activity.Id,
             Title = activity.Title,
-            Type = activity.Type.ToString(),
-            Status = activity.Status.ToString(),
+            Type = activity.Type,
+            Status = activity.Status,
             Date = activity.Date,
             Duration = activity.Duration,
             DistanceInKm = activity.DistanceInKm,
@@ -66,32 +65,28 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         return dto;
     }
 
-    public async Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto)
+    public async Task<ReadActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
     {
         Location location = new()
         {
-            Country = activityDto.Country,
-            City = activityDto.City,
-            Region = activityDto.Region
+            Country = createActivityDto.Country,
+            City = createActivityDto.City,
+            Region = createActivityDto.Region
         };
-
-        var type = EnumHelpers.ParseActivityType(activityDto.Type);
-        var status = EnumHelpers.ParseActivityStatus(activityDto.Status);
-
 
         Activity activity = new()
         {
-            Title = activityDto.Title,
-            Type = type,
-            Status = status,
-            Date = DateTime.SpecifyKind(activityDto.Date, DateTimeKind.Utc),
-            DistanceInKm = activityDto.DistanceInKm,
+            Title = createActivityDto.Title,
+            Type = createActivityDto.Type,
+            Status = createActivityDto.Status,
+            Date = createActivityDto.Date.ToUniversalTime(),
+            DistanceInKm = createActivityDto.DistanceInKm,
             Location = location
         };
 
-        if (!string.IsNullOrEmpty(activityDto.TripName))
+        if (!string.IsNullOrEmpty(createActivityDto.TripName))
         {
-            var trip = await _context.Trips.FirstOrDefaultAsync(t => t.Name == activityDto.TripName);
+            var trip = await _context.Trips.FirstOrDefaultAsync(t => t.Name == createActivityDto.TripName);
             if (trip != null)
             {
                 activity.AssignActivityToTrip(trip); //Sets Trip and TripId internally
@@ -99,15 +94,16 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         }
 
         _context.Activities.Add(activity);
+
         await _context.SaveChangesAsync();
 
         //Map entity → ActivityDto for returning
-        var resultDto = new ActivityDto
+        var resultDto = new ReadActivityDto
         {
             Id = activity.Id,
             Title = activity.Title,
-            Type = activity.Type.ToString(),
-            Status = activity.Status.ToString(),
+            Type = activity.Type,
+            Status = activity.Status,
             Date = activity.Date,
             DistanceInKm = activity.DistanceInKm,
             Country = activity.Location.Country,
@@ -133,7 +129,7 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         return true;
     }
 
-    public async Task<ActivityDto?> EditActivityAsync(int id, UpdateActivityDto updatedActivity)
+    public async Task<ReadActivityDto?> EditActivityAsync(int id, UpdateActivityDto updatedActivity)
     {
         var activity = await _context.Activities.FindAsync(id);
 
@@ -143,13 +139,9 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         }
 
         activity.Title = updatedActivity.Title ?? activity.Title;
-        activity.Type = !string.IsNullOrEmpty(updatedActivity.Type)
-            ? EnumHelpers.ParseActivityType(updatedActivity.Type)
-            : activity.Type;
-        activity.Status = !string.IsNullOrEmpty(updatedActivity.Status)
-            ? EnumHelpers.ParseActivityStatus(updatedActivity.Status)
-            : activity.Status;
-        activity.Date = updatedActivity.Date ?? activity.Date;
+        activity.Type = updatedActivity.Type ?? activity.Type;
+        activity.Status = updatedActivity.Status ?? activity.Status;
+        activity.Date = updatedActivity.Date?.ToUniversalTime() ?? activity.Date;
         activity.DistanceInKm = updatedActivity.DistanceInKm ?? activity.DistanceInKm;
         activity.GpxFilePath = updatedActivity.GpxFilePath ?? activity.GpxFilePath;
         activity.KomootUrl = updatedActivity.KomootUrl ?? activity.KomootUrl;
@@ -159,12 +151,12 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
 
         await _context.SaveChangesAsync();
 
-        return new ActivityDto
+        return new ReadActivityDto
         {
             Id = activity.Id,
             Title = activity.Title,
-            Type = activity.Type.ToString(),
-            Status = activity.Status.ToString(),
+            Type = activity.Type,
+            Status = activity.Status,
             Date = activity.Date,
             DistanceInKm = activity.DistanceInKm,
             GpxFilePath = activity.GpxFilePath,
@@ -175,16 +167,16 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         };
     }
 
-    public async Task<List<ActivityDto>> GetActivitiesByMonthAsync(int year, int month)
+    public async Task<List<ReadActivityDto>> GetActivitiesByMonthAsync(int year, int month)
     {
         var activities = await _context.Activities
         .Where(a => a.Date.Year == year && a.Date.Month == month)
-        .Select(a => new ActivityDto
+        .Select(a => new ReadActivityDto
         {
             Id = a.Id,
             Title = a.Title,
-            Type = a.Type.ToString(),
-            Status = a.Status.ToString(),
+            Type = a.Type,
+            Status = a.Status,
             Date = a.Date,
             Duration = a.Duration,
             DistanceInKm = a.DistanceInKm,
@@ -203,16 +195,16 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         return activities;
     }
 
-    public async Task<List<ActivityDto>> GetActivitiesByYearAsync(int year)
+    public async Task<List<ReadActivityDto>> GetActivitiesByYearAsync(int year)
     {
         var activities = await _context.Activities
         .Where(a => a.Date.Year == year)
-        .Select(a => new ActivityDto
+        .Select(a => new ReadActivityDto
         {
             Id = a.Id,
             Title = a.Title,
-            Type = a.Type.ToString(),
-            Status = a.Status.ToString(),
+            Type = a.Type,
+            Status = a.Status,
             Date = a.Date,
             Duration = a.Duration,
             DistanceInKm = a.DistanceInKm,

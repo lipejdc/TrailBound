@@ -12,7 +12,7 @@ using TrailBound.Infrastructure.Persistence.DatabaseContext;
 namespace TrailBound.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260218180207_InitialMigration")]
+    [Migration("20260219040001_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace TrailBound.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<double>("DistanceInKm")
@@ -87,7 +87,7 @@ namespace TrailBound.Infrastructure.Migrations
                     b.Property<int>("Categories")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("GoogleMapsUrl")
@@ -97,7 +97,7 @@ namespace TrailBound.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");

@@ -4,12 +4,12 @@ namespace TrailBound.Application.Interfaces;
 
 public interface IActivityRepository
 {
-    Task<List<ActivityDto>> GetActivitiesAsync();
-    Task<List<ActivityDto>> GetActivitiesByYearAsync(int year);
-    Task<List<ActivityDto>> GetActivitiesByMonthAsync(int year, int month);
-    Task<ActivityDto?> GetActivityByIdAsync(int id);
-    Task<ActivityDto> CreateActivityAsync(CreateActivityDto activityDto);
-    Task<ActivityDto?> EditActivityAsync(int id, UpdateActivityDto updatedActivity);
+    Task<List<ReadActivityDto>> GetActivitiesAsync();
+    Task<List<ReadActivityDto>> GetActivitiesByYearAsync(int year);
+    Task<List<ReadActivityDto>> GetActivitiesByMonthAsync(int year, int month);
+    Task<ReadActivityDto?> GetActivityByIdAsync(int id);
+    Task<ReadActivityDto> CreateActivityAsync(CreateActivityDto activityDto);
+    Task<ReadActivityDto?> EditActivityAsync(int id, UpdateActivityDto updatedActivity);
     Task<bool> DeleteActivityAsync(int id);
 
 }

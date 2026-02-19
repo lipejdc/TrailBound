@@ -1,13 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using TrailBound.Domain.Enums;
 
 namespace TrailBound.Application.Dtos;
 
 public class UpdateActivityDto
 {
     public string? Title { get; set; }
-    public string? Type { get; set; }
-    public string? Status { get; set; }
-    public DateTime? Date { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ActivityType? Type { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ActivityStatus? Status { get; set; }
+    public DateTimeOffset? Date { get; set; }
 
     [Range(0, double.MaxValue, ErrorMessage = "Distance must be positive")]
     public double? DistanceInKm { get; set; }

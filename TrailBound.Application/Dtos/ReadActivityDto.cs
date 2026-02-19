@@ -1,12 +1,19 @@
-﻿namespace TrailBound.Application.Dtos;
+﻿using System.Text.Json.Serialization;
+using TrailBound.Domain.Enums;
 
-public class ActivityDto
+namespace TrailBound.Application.Dtos;
+
+public class ReadActivityDto
 {
     public int Id { get; set; } //Needed for editing, deleting, navigation
     public string Title { get; set; } = null!;
-    public string Type { get; set; } = null!;
-    public string Status { get; set; } = null!;
-    public DateTime Date { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ActivityType Type { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ActivityStatus Status { get; set; }
+    public DateTimeOffset Date { get; set; }
     public TimeSpan Duration { get; set; }
     public double DistanceInKm { get; set; }
     public int ElevationGain { get; set; }
