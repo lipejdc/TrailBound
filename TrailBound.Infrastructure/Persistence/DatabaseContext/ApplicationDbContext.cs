@@ -16,6 +16,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<Activity>()
             .OwnsOne(a => a.Location);
 
+        modelBuilder.Entity<Activity>()
+            .OwnsOne(a => a.Route);
+
         //Store the ActivityType enum as a string in the DB
         modelBuilder.Entity<Activity>()
             .Property(a => a.Type)

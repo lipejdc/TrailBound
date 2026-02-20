@@ -33,17 +33,8 @@ namespace TrailBound.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<double>("DistanceInKm")
-                        .HasColumnType("double precision");
-
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("interval");
-
-                    b.Property<int>("ElevationGain")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ElevationLoss")
-                        .HasColumnType("integer");
 
                     b.Property<string>("GpxFilePath")
                         .HasColumnType("text");
@@ -131,7 +122,40 @@ namespace TrailBound.Infrastructure.Migrations
                                 .HasForeignKey("ActivityId");
                         });
 
+                    b.OwnsOne("TrailBound.Domain.Entities.Route", "Route", b1 =>
+                        {
+                            b1.Property<int>("ActivityId")
+                                .HasColumnType("integer");
+
+                            b1.Property<double>("DistanceInKm")
+                                .HasColumnType("double precision");
+
+                            b1.Property<int>("ElevationGain")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("ElevationLoss")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("EndPoint")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<string>("StartPoint")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("ActivityId");
+
+                            b1.ToTable("Activities");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ActivityId");
+                        });
+
                     b.Navigation("Location")
+                        .IsRequired();
+
+                    b.Navigation("Route")
                         .IsRequired();
 
                     b.Navigation("Trip");

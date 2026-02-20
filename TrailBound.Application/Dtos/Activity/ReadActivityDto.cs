@@ -1,7 +1,8 @@
 ﻿using System.Text.Json.Serialization;
+using TrailBound.Application.Dtos.Route;
 using TrailBound.Domain.Enums;
 
-namespace TrailBound.Application.Dtos;
+namespace TrailBound.Application.Dtos.Activity;
 
 public record ReadActivityDto
 {

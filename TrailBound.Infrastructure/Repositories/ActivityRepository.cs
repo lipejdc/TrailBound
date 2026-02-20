@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TrailBound.Application.Dtos;
+using TrailBound.Application.Dtos.Activity;
 using TrailBound.Application.Interfaces;
 using TrailBound.Application.Mappers;
 using TrailBound.Domain.Entities;

@@ -1,4 +1,5 @@
-﻿using TrailBound.Application.Dtos;
+﻿using TrailBound.Application.Dtos.Activity;
+using TrailBound.Application.Dtos.Route;
 using TrailBound.Domain.Entities;
 
 namespace TrailBound.Application.Mappers;

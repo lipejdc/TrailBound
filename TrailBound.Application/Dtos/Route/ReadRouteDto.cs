@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrailBound.Application.Dtos;
+namespace TrailBound.Application.Dtos.Route;
 
 public record ReadRouteDto
 {

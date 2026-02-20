@@ -1,4 +1,4 @@
-﻿using TrailBound.Application.Dtos;
+﻿using TrailBound.Application.Dtos.Activity;
 
 namespace TrailBound.Application.Interfaces
 {

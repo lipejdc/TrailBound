@@ -1,4 +1,4 @@
-﻿namespace TrailBound.Application.Dtos;
+﻿namespace TrailBound.Application.Dtos.Route;
 
 public record UpdateRouteDto
 {
