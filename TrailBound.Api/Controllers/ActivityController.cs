@@ -6,21 +6,21 @@ namespace TrailBound.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ActivityController(IActivityRepository activityRepository) : ControllerBase
+public class ActivityController(IActivityService activityService) : ControllerBase
 {
-    private readonly IActivityRepository _activityRepository = activityRepository;
+    private readonly IActivityService _activityService = activityService;
 
     [HttpGet]
     public async Task<IActionResult> GetAllActivities()
     {
-        var activities = await _activityRepository.GetActivitiesAsync();
+        var activities = await _activityService.GetActivitiesAsync();
         return Ok(activities);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetActivityById(int id)
     {
-        var activity = await _activityRepository.GetActivityByIdAsync(id);
+        var activity = await _activityService.GetActivityByIdAsync(id);
 
         if (activity == null)
         {
@@ -33,7 +33,7 @@ public class ActivityController(IActivityRepository activityRepository) : Contro
     [HttpGet("year/{year}")]
     public async Task<IActionResult> GetActivitiesByYear(int year)
     {
-        var activities = await _activityRepository.GetActivitiesByYearAsync(year);
+        var activities = await _activityService.GetActivitiesByYearAsync(year);
 
         if (activities == null || !activities.Any())
         {
@@ -46,16 +46,11 @@ public class ActivityController(IActivityRepository activityRepository) : Contro
     [HttpGet("{year}/{month}")]
     public async Task<IActionResult> GetActivitiesByMonth(int year, int month)
     {
-        var activities = await _activityRepository.GetActivitiesByMonthAsync(year, month);
+        var activities = await _activityService.GetActivitiesByMonthAsync(year, month);
 
-        if (activities == null || !activities.Any())
+        if (!activities.Any())
         {
             return NotFound();
-        }
-
-        if (month < 1 || month > 12)
-        {
-            return BadRequest("Month must be between 1 and 12.");
         }
 
         return Ok(activities);
@@ -64,7 +59,7 @@ public class ActivityController(IActivityRepository activityRepository) : Contro
     [HttpPost]
     public async Task<IActionResult> CreateActivity([FromBody] CreateActivityDto createActivityDto)
     {
-        var activity = await _activityRepository.CreateActivityAsync(createActivityDto);
+        var activity = await _activityService.CreateActivityAsync(createActivityDto);
 
         return CreatedAtAction(nameof(GetActivityById), new { id = activity.Id }, activity);
     }
@@ -72,7 +67,7 @@ public class ActivityController(IActivityRepository activityRepository) : Contro
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateActivity(int id, [FromBody] UpdateActivityDto updateActivityDto)
     {
-        var updatedActivity = await _activityRepository.EditActivityAsync(id, updateActivityDto);
+        var updatedActivity = await _activityService.UpdateActivityAsync(id, updateActivityDto);
 
         if (updatedActivity == null)
         {
@@ -85,7 +80,7 @@ public class ActivityController(IActivityRepository activityRepository) : Contro
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteActivity(int id)
     {
-        var activityDeleted = await _activityRepository.DeleteActivityAsync(id);
+        var activityDeleted = await _activityService.DeleteActivityAsync(id);
 
         if (!activityDeleted)
         {

@@ -25,6 +25,17 @@ public class Trip
         if (_activities.Contains(activity)) return;
 
         _activities.Add(activity);
-        activity.AssignActivityToTrip(this); //Sets the Trip reference and TripId in the Activity
+        activity.AssignActivityToTrip(this); //Sets activity.Trip = trip and activity.TripId = trip.Id
+    }
+
+    public void RemoveActivityFromTrip(Activity activity)
+    {
+        ArgumentNullException.ThrowIfNull(activity);
+
+        if (_activities.Remove(activity)) //Check if activity was removed, if yes...
+        {
+            if (activity.Trip == this) //..then check if the activity.Trip points to this trip...
+                activity.AssignActivityToTrip(null); //Sets activity.Trip = null and activity.TripId = null
+        }
     }
 }

@@ -23,6 +23,8 @@ public record CreateActivityDto
     [Required(ErrorMessage = "DistanceInKm is required")]
     [Range(0, double.MaxValue, ErrorMessage = "Distance must be positive")]
     public double DistanceInKm { get; init; }
+    public int? ElevationGain { get; init; }
+    public int? ElevationLoss { get; set; }
 
     public string? GpxFilePath { get; init; }
     public string? KomootUrl { get; init; }
@@ -32,5 +34,8 @@ public record CreateActivityDto
     public string? City { get; init; }
     public string? Region { get; init; }
 
-    public string? TripName { get; init; }
+    public int? TripId { get; init; }
+
+    //Optional, for assigning to existing trip
+    public string? TripName { get; set; }
 }

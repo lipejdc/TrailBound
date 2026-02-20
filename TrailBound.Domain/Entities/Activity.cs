@@ -28,9 +28,7 @@ public class Activity
     //Method to assign a trip
     public void AssignActivityToTrip(Trip trip)
     {
-        ArgumentNullException.ThrowIfNull(trip);
-
-        Trip = trip;
-        TripId = trip.Id;
+        Trip = trip; //Sets the navigation property
+        TripId = trip.Id; //Sets the foreign key, null if trip is null
     }
 }
