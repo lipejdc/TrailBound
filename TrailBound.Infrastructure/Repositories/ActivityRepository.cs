@@ -38,7 +38,7 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
         //Assign trip if TripName or TripId is provided
         if (!string.IsNullOrEmpty(createActivityDto.TripName))
         {
-            var trip = await _context.Trips.FirstOrDefaultAsync(t => t.Name == createActivityDto.TripName);
+            var trip = await _context.Trips.FirstOrDefaultAsync(t => t.Title == createActivityDto.TripName);
             if (trip != null)
             {
                 activity.AssignActivityToTrip(trip); //Sets Trip and TripId internally

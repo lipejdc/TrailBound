@@ -27,7 +27,7 @@ public record CreateActivityDto
     [Required(ErrorMessage = "Country is required")]
     public string Country { get; init; } = null!;
     public string? City { get; init; }
-    public string? Region { get; init; }
+    public string? Area { get; init; }
 
     public int? TripId { get; init; }
 

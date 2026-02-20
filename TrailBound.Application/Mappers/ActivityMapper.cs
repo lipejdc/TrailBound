@@ -25,12 +25,12 @@ public static class ActivityMapper
                 ElevationLoss = activity.Route.ElevationLoss
             },
             City = activity.Location.City,
-            Region = activity.Location.Region,
+            Area = activity.Location.Area,
             Country = activity.Location.Country,
             GpxFilePath = activity.GpxFilePath,
             KomootUrl = activity.KomootUrl,
             TripId = activity.TripId,
-            TripName = activity.Trip?.Name
+            TripName = activity.Trip?.Title
         };
     }
 
@@ -54,7 +54,7 @@ public static class ActivityMapper
             {
                 Country = createActivityDto.Country,
                 City = createActivityDto.City,
-                Region = createActivityDto.Region
+                Area = createActivityDto.Area
             },
             GpxFilePath = createActivityDto.GpxFilePath,
             KomootUrl = createActivityDto.KomootUrl
@@ -72,7 +72,7 @@ public static class ActivityMapper
         activity.KomootUrl = updateActivityDto.KomootUrl ?? activity.KomootUrl;
         activity.Location.Country = updateActivityDto.Country ?? activity.Location.Country;
         activity.Location.City = updateActivityDto.City ?? activity.Location.City;
-        activity.Location.Region = updateActivityDto.Region ?? activity.Location.Region;
+        activity.Location.Area = updateActivityDto.Area ?? activity.Location.Area;
 
         if (updateActivityDto.Route != null)
         {

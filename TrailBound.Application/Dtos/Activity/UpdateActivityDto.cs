@@ -23,5 +23,5 @@ public record UpdateActivityDto
     //Location flattened
     public string? Country { get; init; }
     public string? City { get; init; }
-    public string? Region { get; init; }
+    public string? Area { get; init; }
 }

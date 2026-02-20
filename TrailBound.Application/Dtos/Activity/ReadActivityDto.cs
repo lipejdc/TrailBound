@@ -21,7 +21,7 @@ public record ReadActivityDto
     // Location flattened
     public string Country { get; init; } = null!;
     public string? City { get; init; }
-    public string? Region { get; init; }
+    public string? Area { get; init; }
 
     // Media / routes
     public string? GpxFilePath { get; init; }

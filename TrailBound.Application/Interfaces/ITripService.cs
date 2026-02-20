@@ -2,7 +2,7 @@
 
 namespace TrailBound.Application.Interfaces;
 
-public interface ITripRepository
+public interface ITripService
 {
     Task<List<ReadTripDto>> GetTripsAsync();
     Task<List<ReadTripDto>> GetTripsByYearAsync(int year);

@@ -16,8 +16,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<Activity>()
             .OwnsOne(a => a.Location);
 
+        //Tells EF Core that Route is a value object owned by Activity
         modelBuilder.Entity<Activity>()
             .OwnsOne(a => a.Route);
+
+        //Tells EF Core that Location is a value object owned by Activity
+        modelBuilder.Entity<Trip>()
+            .OwnsOne(t => t.Location);
 
         //Store the ActivityType enum as a string in the DB
         modelBuilder.Entity<Activity>()

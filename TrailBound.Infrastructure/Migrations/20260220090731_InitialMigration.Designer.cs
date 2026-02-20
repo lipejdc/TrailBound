@@ -12,7 +12,7 @@ using TrailBound.Infrastructure.Persistence.DatabaseContext;
 namespace TrailBound.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260220075108_InitialMigration")]
+    [Migration("20260220090731_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -84,12 +84,12 @@ namespace TrailBound.Infrastructure.Migrations
                     b.Property<string>("GoogleMapsUrl")
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -107,14 +107,14 @@ namespace TrailBound.Infrastructure.Migrations
                             b1.Property<int>("ActivityId")
                                 .HasColumnType("integer");
 
+                            b1.Property<string>("Area")
+                                .HasColumnType("text");
+
                             b1.Property<string>("City")
                                 .HasColumnType("text");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("Region")
                                 .HasColumnType("text");
 
                             b1.HasKey("ActivityId");
@@ -162,6 +162,35 @@ namespace TrailBound.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("TrailBound.Domain.Entities.Trip", b =>
+                {
+                    b.OwnsOne("TrailBound.Domain.Entities.Location", "Location", b1 =>
+                        {
+                            b1.Property<int>("TripId")
+                                .HasColumnType("integer");
+
+                            b1.Property<string>("Area")
+                                .HasColumnType("text");
+
+                            b1.Property<string>("City")
+                                .HasColumnType("text");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.HasKey("TripId");
+
+                            b1.ToTable("Trips");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TripId");
+                        });
+
+                    b.Navigation("Location")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TrailBound.Domain.Entities.Trip", b =>

@@ -12,6 +12,8 @@ builder.Services.AddControllers();
 builder.Services.AddNpgsql<ApplicationDbContext>(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
 builder.Services.AddScoped<IActivityService, ActivityService>();
+builder.Services.AddScoped<ITripRepository, TripRepository>();
+builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
