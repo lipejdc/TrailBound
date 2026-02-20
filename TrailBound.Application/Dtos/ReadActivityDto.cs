@@ -13,12 +13,9 @@ public record ReadActivityDto
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public ActivityStatus Status { get; init; }
-
     public DateTimeOffset Date { get; init; }
     public TimeSpan Duration { get; init; }
-    public double DistanceInKm { get; init; }
-    public int ElevationGain { get; init; }
-    public int ElevationLoss { get; init; }
+    public ReadRouteDto Route { get; init; } = new();
 
     // Location flattened
     public string Country { get; init; } = null!;

@@ -13,14 +13,9 @@ public record UpdateActivityDto
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
     public ActivityStatus? Status { get; init; }
-
     public DateTimeOffset? Date { get; init; }
     public TimeSpan? Duration { get; init; }
-
-    [Range(0, double.MaxValue, ErrorMessage = "Distance must be positive")]
-    public double? DistanceInKm { get; init; }
-    public int? ElevationGain { get; init; }
-    public int? ElevationLoss { get; init; }
+    public UpdateRouteDto? Route { get; init; }
     public string? GpxFilePath { get; init; }
     public string? KomootUrl { get; init; }
 

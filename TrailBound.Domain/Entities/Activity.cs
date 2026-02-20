@@ -15,9 +15,7 @@ public class Activity
     public Location Location { get; set; } = null!;
     public DateTimeOffset Date { get; set; }
     public TimeSpan Duration { get; set; }
-    public double DistanceInKm { get; set; }
-    public int ElevationGain { get; set; }
-    public int ElevationLoss { get; set; }
+    public Route Route { get; set; } = null!;
     public string? GpxFilePath { get; set; }
     public string? KomootUrl { get; set; }
     public ActivityStatus Status { get; set; }
