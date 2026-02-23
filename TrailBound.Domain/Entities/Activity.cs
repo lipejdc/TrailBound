@@ -19,14 +19,6 @@ public class Activity
     public string? GpxFilePath { get; set; }
     public string? KomootUrl { get; set; }
     public ActivityStatus Status { get; set; }
-
     public int? TripId { get; set; } //Optional foreign key
     public Trip? Trip { get; set; } //Navigation property
-
-    //Method to assign a trip
-    public void AssignActivityToTrip(Trip trip)
-    {
-        Trip = trip; //Sets the navigation property
-        TripId = trip.Id; //Sets the foreign key, null if trip is null
-    }
 }

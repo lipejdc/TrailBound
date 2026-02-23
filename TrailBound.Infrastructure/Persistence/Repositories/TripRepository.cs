@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TrailBound.Application.Dtos.Trip;
 using TrailBound.Application.Interfaces;
-using TrailBound.Application.Mappers;
 using TrailBound.Domain.Entities;
 using TrailBound.Infrastructure.Persistence.DatabaseContext;
 
-namespace TrailBound.Infrastructure.Repositories;
+namespace TrailBound.Infrastructure.Persistence.Repositories;
 
 public class TripRepository(ApplicationDbContext context) : ITripRepository
 {

@@ -1,5 +1,6 @@
 ﻿using TrailBound.Application.Dtos.Activity;
 using TrailBound.Application.Interfaces;
+using TrailBound.Application.Mappers;
 
 namespace TrailBound.Application.Services;
 
@@ -7,14 +8,20 @@ public class ActivityService(IActivityRepository activityRepository) : IActivity
 {
     private readonly IActivityRepository _activityRepository = activityRepository;
 
-    public async Task<ReadActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
-        => await _activityRepository.CreateActivityAsync(createActivityDto);
-
-    public async Task<bool> DeleteActivityAsync(int id)
-        => await _activityRepository.DeleteActivityAsync(id);
 
     public async Task<List<ReadActivityDto>> GetActivitiesAsync()
-        => await _activityRepository.GetActivitiesAsync();
+    {
+        var activities = await _activityRepository.GetAllAsync();
+
+        return activities.Select(a => a.ToReadDto()).ToList();
+    }
+
+    public async Task<ReadActivityDto?> GetActivityByIdAsync(int id)
+    {
+        var activity = await _activityRepository.GetByIdAsync(id);
+
+        return activity?.ToReadDto();
+    }
 
     public async Task<List<ReadActivityDto>> GetActivitiesByMonthAsync(int year, int month)
     {
@@ -23,15 +30,43 @@ public class ActivityService(IActivityRepository activityRepository) : IActivity
             throw new ArgumentException("Month must be between 1 and 12!");
         }
 
-        return await _activityRepository.GetActivitiesByMonthAsync(year, month);
+        var activities = await _activityRepository.GetByMonthAsync(year, month);
+
+        return activities.Select(a => a.ToReadDto()).ToList();
     }
 
     public async Task<List<ReadActivityDto>> GetActivitiesByYearAsync(int year)
-        => await _activityRepository.GetActivitiesByYearAsync(year);
+    {
+        var activities = await _activityRepository.GetByYearAsync(year);
 
-    public async Task<ReadActivityDto?> GetActivityByIdAsync(int id)
-        => await _activityRepository.GetActivityByIdAsync(id);
+        return activities.Select(a => a.ToReadDto()).ToList();
+    }
+
+    public async Task<ReadActivityDto> CreateActivityAsync(CreateActivityDto createActivityDto)
+    {
+        var entity = createActivityDto.ToEntity();
+
+        var createdEntity = await _activityRepository.CreateAsync(entity);
+
+        return createdEntity.ToReadDto();
+    }
+
+    public async Task<bool> DeleteActivityAsync(int id)
+        => await _activityRepository.DeleteAsync(id);
 
     public async Task<ReadActivityDto?> UpdateActivityAsync(int id, UpdateActivityDto updateActivityDto)
-        => await _activityRepository.UpdateActivityAsync(id, updateActivityDto);
+    {
+        var existingActivity = await _activityRepository.GetByIdAsync(id);
+
+        if (existingActivity == null)
+        {
+            return null;
+        }
+
+        existingActivity.ApplyUpdate(updateActivityDto);
+
+        var updatedActivity = await _activityRepository.UpdateAsync(existingActivity);
+
+        return updatedActivity?.ToReadDto();
+    }
 }

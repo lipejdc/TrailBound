@@ -15,28 +15,4 @@ public class Trip
     public TripCategory Categories { get; set; }
     public Location Location { get; set; } = null!;
     public string? GoogleMapsUrl { get; set; }
-
-    //Activities belonging to this trip
-    private readonly List<Activity> _activities = new();
-    public IReadOnlyList<Activity> Activities => _activities.AsReadOnly();
-
-    public void AddActivityToTrip(Activity activity)
-    {
-        ArgumentNullException.ThrowIfNull(activity);
-        if (_activities.Contains(activity)) return;
-
-        _activities.Add(activity);
-        activity.AssignActivityToTrip(this); //Sets activity.Trip = trip and activity.TripId = trip.Id
-    }
-
-    public void RemoveActivityFromTrip(Activity activity)
-    {
-        ArgumentNullException.ThrowIfNull(activity);
-
-        if (_activities.Remove(activity)) //Check if activity was removed, if yes...
-        {
-            if (activity.Trip == this) //..then check if the activity.Trip points to this trip...
-                activity.AssignActivityToTrip(null); //Sets activity.Trip = null and activity.TripId = null
-        }
-    }
 }
