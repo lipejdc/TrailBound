@@ -3,4 +3,5 @@
   <Project Path="TrailBound.Application/TrailBound.Application.csproj" />
   <Project Path="TrailBound.Domain/TrailBound.Domain.csproj" />
   <Project Path="TrailBound.Infrastructure/TrailBound.Infrastructure.csproj" />
+  <Project Path="TrailBound.KomootWrapper/TrailBound.KomootWrapper.csproj" Id="a66e3f2c-3ade-4472-bff9-12598d77b87e" />
 </Solution>

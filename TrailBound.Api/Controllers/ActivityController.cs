@@ -1,14 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrailBound.Application.Dtos.Activity;
 using TrailBound.Application.Interfaces;
+using TrailBound.KomootWrapper;
 
 namespace TrailBound.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ActivityController(IActivityService activityService) : ControllerBase
+public class ActivityController(IActivityService activityService, IKomootClient komootClient) : ControllerBase
 {
     private readonly IActivityService _activityService = activityService;
+    private readonly IKomootClient _komootClient = komootClient;
 
     [HttpGet]
     public async Task<IActionResult> GetAllActivities()
@@ -88,5 +90,13 @@ public class ActivityController(IActivityService activityService) : ControllerBa
         }
 
         return NoContent();
+    }
+
+    [HttpGet("tours")]
+    public async Task<IActionResult> GetTours()
+    {
+        var authToken = "eyJ4NXQjUzI1NiI6InlIQ2xZdUdwWlNvU2c3dkhrT1k4YzYyR2NGdGxSeV9neEpIYkJfNFpjamsiLCJraWQiOiJqd3QtMjAyNTAyMTEiLCJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJydGkiOiJmYjlkYmVlMWZiOWJmMWFlNjJlMDkyOTVjMTAwNjlmYWVkZmU4ZTcwNjQwZTIwYmM5ZGE5OGU4NzU5NDA5NDc4IiwidXNlcl9uYW1lIjoiMTY0Mjc5MjI4ODM2OSIsInNjb3BlIjpbInVzZXIuKiJdLCJleHAiOjE3NzIyMTU5MjIsImlhdCI6MTc3MjIxNDEyMiwianRpIjoiZmM4MWE4M2YtOTdmNC00MGJhLWEwMGMtZjJjOWM0ZGE2OTA2IiwiY2xpZW50X2lkIjoia29tb290LXdlYiIsInVzZXJuYW1lIjoiMTY0Mjc5MjI4ODM2OSJ9.zzm8gAIoGf11N8JHflg3TVTfd7SPEEUyn_KvfvSvqPjlxhWiFI9kyuv9flAGkeQncV7Z6paiWsbvqLljXtYB78BQo1D5A55FWcvhielZlTu3InWU70lmBULo0hEGOtNsGyfTtleSTcx3PBmGDBYvyMlAYH9w40A1t6Rbz2roc79sSxn2H5dhyV8SB2Tj-y8a7QsegWjx19OdL25VA5WSR_0zAz3mbCqjj4sP_636scNmmjN5UgVCYfr-X-m69BnZzboFyNFwLvGRfA7ehMeGI515JeJz5jd32rBt6RtMn8HP99-OkGcGIHhhOJys0ehh_TsHcBzmEeP21ZU-VNmRUw";
+        await _komootClient.GetToursAsync("1642792288369", authToken, CancellationToken.None);
+        return Ok();
     }
 }

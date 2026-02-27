@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TrailBound.Infrastructure\TrailBound.Infrastructure.csproj" />
+    <ProjectReference Include="..\TrailBound.KomootWrapper\TrailBound.KomootWrapper.csproj" />
   </ItemGroup>
 
 </Project>
