@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpClient<KomootClient>(client =>
 {
-    client.BaseAddress = new Uri("https://www.komoot.com/");
+    client.BaseAddress = new Uri("https://www.komoot.com");
 });
 
 
