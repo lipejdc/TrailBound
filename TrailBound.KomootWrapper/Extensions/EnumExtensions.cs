@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace TrailBound.KomootWrapper;
+namespace TrailBound.KomootWrapper.Extensions;
 
 public static class EnumExtensions
 {

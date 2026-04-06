@@ -5,17 +5,16 @@ using TrailBound.Infrastructure.Persistence.DatabaseContext;
 using TrailBound.Infrastructure.Persistence.Repositories;
 using TrailBound.Infrastructure.Repositories;
 using TrailBound.KomootWrapper;
+using TrailBound.KomootWrapper.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// Add services to the container.
 builder.Services.AddHttpClient<KomootClient>(client =>
 {
     client.BaseAddress = new Uri("https://www.komoot.com");
 });
 
-
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddNpgsql<ApplicationDbContext>(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddScoped<IActivityRepository, ActivityRepository>();

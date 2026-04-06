@@ -1,4 +1,6 @@
-﻿namespace TrailBound.KomootWrapper;
+﻿using TrailBound.KomootWrapper.Enums;
+
+namespace TrailBound.KomootWrapper.Interfaces;
 
 public interface IKomootClient
 {
@@ -12,6 +14,4 @@ public interface IKomootClient
         int page,
         int limit,
         CancellationToken cancellationToken);
-
-    //Task LoginToKomootAsync(Dictionary<string, string> creds);
 }

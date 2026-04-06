@@ -8,7 +8,6 @@ public class ActivityService(IActivityRepository activityRepository) : IActivity
 {
     private readonly IActivityRepository _activityRepository = activityRepository;
 
-
     public async Task<List<ReadActivityDto>> GetActivitiesAsync()
     {
         var activities = await _activityRepository.GetAllAsync();

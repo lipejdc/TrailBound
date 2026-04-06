@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TrailBound.KomootWrapper;
+namespace TrailBound.KomootWrapper.Enums;
 
 public enum TourType
 {
