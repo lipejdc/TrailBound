@@ -12,7 +12,7 @@ public record CreateRouteDto
 
     [Required]
     [Range(0.1, double.MaxValue, ErrorMessage = "Distance must be greater than 0")]
-    public double DistanceInKm { get; init; }
+    public double DistanceInKilometers { get; init; }
 
     [Range(1, int.MaxValue, ErrorMessage = "Elevation gain must be greater than 0")]
     public int ElevationGain { get; init; }

@@ -9,3 +9,4 @@ public class Location
     public string? Area { get; set; }
     public string Country { get; set; } = null!;
 }
+

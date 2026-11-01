@@ -20,7 +20,7 @@ public static class ActivityMapper
             {
                 StartPoint = activity.Route.StartPoint,
                 EndPoint = activity.Route.EndPoint,
-                DistanceInKm = activity.Route.DistanceInKm,
+                DistanceInKm = activity.Route.DistanceInKilometers,
                 ElevationGain = activity.Route.ElevationGain,
                 ElevationLoss = activity.Route.ElevationLoss
             },
@@ -46,7 +46,7 @@ public static class ActivityMapper
             {
                 StartPoint = createActivityDto.Route.StartPoint,
                 EndPoint = createActivityDto.Route.EndPoint,
-                DistanceInKm = createActivityDto.Route.DistanceInKm,
+                DistanceInKilometers = createActivityDto.Route.DistanceInKilometers,
                 ElevationGain = createActivityDto.Route.ElevationGain,
                 ElevationLoss = createActivityDto.Route.ElevationLoss
             },
@@ -78,7 +78,7 @@ public static class ActivityMapper
         {
             activity.Route.StartPoint = updateActivityDto.Route.StartPoint ?? activity.Route.StartPoint;
             activity.Route.EndPoint = updateActivityDto.Route.EndPoint ?? activity.Route.EndPoint;
-            activity.Route.DistanceInKm = updateActivityDto.Route.DistanceInKm ?? activity.Route.DistanceInKm;
+            activity.Route.DistanceInKilometers = updateActivityDto.Route.DistanceInKm ?? activity.Route.DistanceInKilometers;
             activity.Route.ElevationGain = updateActivityDto.Route.ElevationGain ?? activity.Route.ElevationGain;
             activity.Route.ElevationLoss = updateActivityDto.Route.ElevationLoss ?? activity.Route.ElevationLoss;
         }

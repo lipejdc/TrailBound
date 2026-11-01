@@ -1,6 +1,8 @@
 ﻿using TrailBound.Application.Dtos.Activity;
+using TrailBound.Application.Dtos.Pagination;
 using TrailBound.Application.Interfaces;
 using TrailBound.Application.Mappers;
+using TrailBound.Domain.Entities;
 
 namespace TrailBound.Application.Services;
 
@@ -9,11 +11,16 @@ public class ActivityService(IActivityRepository activityRepository) : IActivity
     private readonly IActivityRepository _activityRepository = activityRepository;
 
 
-    public async Task<List<ReadActivityDto>> GetActivitiesAsync()
+    public async Task<PaginatedResult<ReadActivityDto>> GetActivitiesAsync(ActivityPaginationFilter paginationFilter)
     {
-        var activities = await _activityRepository.GetAllAsync();
+        var activities = await _activityRepository.GetAllAsync(paginationFilter, CancellationToken.None);
 
-        return activities.Select(a => a.ToReadDto()).ToList();
+        return new PaginatedResult<ReadActivityDto>(
+            new List<ReadActivityDto>(),
+            paginationFilter.PageNumber,
+            paginationFilter.PageSize,
+            10
+        );
     }
 
     public async Task<ReadActivityDto?> GetActivityByIdAsync(int id)

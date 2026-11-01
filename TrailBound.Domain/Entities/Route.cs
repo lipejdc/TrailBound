@@ -8,7 +8,8 @@ public class Route
 {
     public string StartPoint { get; set; } = string.Empty;
     public string EndPoint { get; set; } = string.Empty;
-    public double DistanceInKm { get; set; }
+    public double DistanceInKilometers { get; set; }
+    public int DistanceInMeters { get; set; }
     public int ElevationGain { get; set; }
     public int ElevationLoss { get; set; }
 }

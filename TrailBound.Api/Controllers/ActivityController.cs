@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TrailBound.Application.Dtos.Activity;
+using TrailBound.Application.Dtos.Pagination;
 using TrailBound.Application.Interfaces;
+using TrailBound.Domain.Entities;
 using TrailBound.KomootWrapper;
 
 namespace TrailBound.Api.Controllers;
@@ -8,18 +10,45 @@ namespace TrailBound.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class ActivityController(
-    IActivityService activityService, 
+    IActivityService activityService,
+    IActivityRepository activityRepository,
     IKomootClient komootClient,
     IConfiguration configuration) : ControllerBase
 {
     private readonly IActivityService _activityService = activityService;
     private readonly IKomootClient _komootClient = komootClient;
     private readonly IConfiguration _configuration = configuration;
+    private readonly IActivityRepository _activityRepository = activityRepository;
 
     [HttpGet]
-    public async Task<IActionResult> GetAllActivities()
+    public async Task<ActionResult<PaginatedResult<Activity>>> GetAllActivities(
+        int pageNumber, 
+        int pageSize, 
+        string? searchFilter,
+        string? activityTypeFilter,
+        DateTimeOffset? startDateFilter,
+        DateTimeOffset? endDateFilter,
+        TimeSpan minDurationFilter,
+        TimeSpan maxDurationFilter,
+        int minDistanceFilter,
+        int maxDistanceFilter
+        )
     {
-        var activities = await _activityService.GetActivitiesAsync();
+        var paginationFilter = new ActivityPaginationFilter
+        {
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            Title = searchFilter,
+            ActivityType = activityTypeFilter,
+            StartDate = startDateFilter ?? DateTimeOffset.MinValue,
+            EndDate = endDateFilter ?? DateTimeOffset.MaxValue,
+            MinimalDuration = minDurationFilter,
+            MaximalDuration = maxDurationFilter,
+            MinimalDistanceInMeters = minDistanceFilter,
+            MaximalDistanceInMeters = maxDistanceFilter
+        };
+
+        var activities = await _activityRepository.GetAllAsync(paginationFilter);
         return Ok(activities);
     }
 

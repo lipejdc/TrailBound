@@ -1,10 +1,12 @@
 ﻿using TrailBound.Application.Dtos.Activity;
+using TrailBound.Application.Dtos.Pagination;
+using TrailBound.Domain.Entities;
 
 namespace TrailBound.Application.Interfaces
 {
     public interface IActivityService
     {
-        Task<List<ReadActivityDto>> GetActivitiesAsync();
+        Task<PaginatedResult<ReadActivityDto>> GetActivitiesAsync(ActivityPaginationFilter paginationFilter);
         Task<ReadActivityDto?> GetActivityByIdAsync(int id);
         Task<ReadActivityDto> CreateActivityAsync(CreateActivityDto dto);
         Task<ReadActivityDto?> UpdateActivityAsync(int id, UpdateActivityDto dto);
