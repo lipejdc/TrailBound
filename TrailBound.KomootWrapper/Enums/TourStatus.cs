@@ -1,4 +1,4 @@
-﻿namespace TrailBound.KomootWrapper;
+﻿namespace TrailBound.KomootWrapper.Enums;
 
 public enum TourStatus
 {

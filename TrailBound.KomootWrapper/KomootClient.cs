@@ -1,5 +1,8 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
+using TrailBound.KomootWrapper.Enums;
+using TrailBound.KomootWrapper.Extensions;
+using TrailBound.KomootWrapper.Interfaces;
 
 namespace TrailBound.KomootWrapper;
 
@@ -59,43 +62,4 @@ public class KomootClient : IKomootClient
 
         return tours ?? new KomootTourResponse();
     }
-
-    //public async Task LoginToKomootAsync(Dictionary<string, string> creds)
-    //{
-    //    if (!creds.ContainsKey("user_id") || !creds.ContainsKey("cookie"))
-    //        throw new ArgumentException("Missing required credentials.");
-
-    //    var userId = creds["user_id"];
-
-    //    var rawCookies = creds["cookie"]?.Trim();
-    //    if (string.IsNullOrEmpty(rawCookies))
-    //        throw new ArgumentException("Cookie string cannot be empty.");
-
-    //    var request = new HttpRequestMessage(
-    //        HttpMethod.Get,
-    //        "https://account.komoot.com/actions/transfer?type=signin"
-    //    );
-
-    //    // Inject raw cookie header manually
-    //    request.Headers.Add("Cookie", rawCookies);
-
-    //    var response = await _httpClient.SendAsync(request);
-
-    //    response.EnsureSuccessStatusCode();
-
-    //    // ✅ Read response body
-    //    var responseBody = await response.Content.ReadAsStringAsync();
-
-    //    // ✅ Read response cookies (if any)
-    //    if (response.Headers.TryGetValues("Set-Cookie", out var setCookies))
-    //    {
-    //        foreach (var cookie in setCookies)
-    //        {
-    //            Console.WriteLine($"Set-Cookie: {cookie}");
-    //        }
-    //    }
-
-    //    // Optional: log status
-    //    Console.WriteLine($"Status: {(int)response.StatusCode}");
-    //}
 }
