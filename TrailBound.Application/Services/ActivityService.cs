@@ -13,14 +13,13 @@ public class ActivityService(IActivityRepository activityRepository) : IActivity
 
     public async Task<PaginatedResult<ReadActivityDto>> GetActivitiesAsync(ActivityPaginationFilter paginationFilter)
     {
-        var activities = await _activityRepository.GetAllAsync(paginationFilter, CancellationToken.None);
+        var activities = await _activityRepository.GetAllAsync(paginationFilter);
 
         return new PaginatedResult<ReadActivityDto>(
-            new List<ReadActivityDto>(),
+            activities.Select(a => a.ToReadDto()).ToList(),
             paginationFilter.PageNumber,
             paginationFilter.PageSize,
-            10
-        );
+            activities.Count);
     }
 
     public async Task<ReadActivityDto?> GetActivityByIdAsync(int id)
