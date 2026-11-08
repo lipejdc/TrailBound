@@ -40,7 +40,7 @@ export const MOCK_TOURS: Tour[] = [
     startLocation: 'Freudenstadt',
     description: 'A classic ridge traverse through Black Forest pines with sweeping views over the Rhine plain.',
     komootUrl: 'https://www.komoot.com/tour/1',
-    date: '2024-09-14',
+    date: new Date('2024-09-14'),
   },
   {
     id: '2',
@@ -54,7 +54,7 @@ export const MOCK_TOURS: Tour[] = [
     startLocation: 'Bad Urach',
     description: 'Meadows, limestone bluffs and the waterfall at the Uracher Wasserfall. Perfect for a half-day.',
     komootUrl: 'https://www.komoot.com/tour/2',
-    date: '2024-08-03',
+    date: new Date('2024-08-03'),
   },
   {
     id: '3',
@@ -68,7 +68,7 @@ export const MOCK_TOURS: Tour[] = [
     startLocation: 'Grainau',
     description: 'Germany\'s highest summit via the Reintal valley — long, demanding, unforgettable.',
     komootUrl: 'https://www.komoot.com/tour/3',
-    date: '2024-07-20',
+    date: new Date('2024-07-20'),
   },
   {
     id: '4',
@@ -82,7 +82,7 @@ export const MOCK_TOURS: Tour[] = [
     startLocation: 'Breisach',
     description: 'Vineyard paths above the Rhine with views to the Vosges and Black Forest on a clear day.',
     komootUrl: 'https://www.komoot.com/tour/4',
-    date: '2024-06-08',
+    date: new Date('2024-06-08'),
   },
   {
     id: '5',
@@ -96,7 +96,7 @@ export const MOCK_TOURS: Tour[] = [
     startLocation: 'Bonndorf',
     description: 'Through the wild gorge of the Wutach — mossy rocks, river crossings, primeval atmosphere.',
     komootUrl: 'https://www.komoot.com/tour/5',
-    date: '2024-05-18',
+    date: new Date('2024-05-18'),
   },
   {
     id: '6',
@@ -110,6 +110,6 @@ export const MOCK_TOURS: Tour[] = [
     startLocation: 'Feldberg',
     description: 'Trail run around the highest peak in the Black Forest — technical, fast, rewarding.',
     komootUrl: 'https://www.komoot.com/tour/6',
-    date: '2024-04-27',
+    date: new Date('2024-04-27'),
   },
 ];

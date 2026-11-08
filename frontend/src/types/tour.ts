@@ -13,5 +13,5 @@ export interface Tour {
   startLocation: string;
   description: string;
   komootUrl: string;
-  date: string; // ISO date string
+  date: Date; // ISO date string
 }

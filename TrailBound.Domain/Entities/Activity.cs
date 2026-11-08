@@ -19,6 +19,8 @@ public class Activity
     public string? GpxFilePath { get; set; }
     public string? KomootUrl { get; set; }
     public ActivityStatus Status { get; set; }
+    public string Thumbnail { get; set; } = string.Empty;
+    public List<string>? ImageURLs { get; set; }
     public int? TripId { get; set; } //Optional foreign key
     public Trip? Trip { get; set; } //Navigation property
 }
