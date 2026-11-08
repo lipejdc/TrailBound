@@ -96,7 +96,7 @@ namespace TrailBound.Infrastructure.Migrations
             modelBuilder.Entity("TrailBound.Domain.Entities.Activity", b =>
                 {
                     b.HasOne("TrailBound.Domain.Entities.Trip", "Trip")
-                        .WithMany("Activities")
+                        .WithMany()
                         .HasForeignKey("TripId");
 
                     b.OwnsOne("TrailBound.Domain.Entities.Location", "Location", b1 =>
@@ -127,8 +127,11 @@ namespace TrailBound.Infrastructure.Migrations
                             b1.Property<int>("ActivityId")
                                 .HasColumnType("integer");
 
-                            b1.Property<double>("DistanceInKm")
+                            b1.Property<double>("DistanceInKilometers")
                                 .HasColumnType("double precision");
+
+                            b1.Property<int>("DistanceInMeters")
+                                .HasColumnType("integer");
 
                             b1.Property<int>("ElevationGain")
                                 .HasColumnType("integer");
@@ -188,11 +191,6 @@ namespace TrailBound.Infrastructure.Migrations
 
                     b.Navigation("Location")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TrailBound.Domain.Entities.Trip", b =>
-                {
-                    b.Navigation("Activities");
                 });
 #pragma warning restore 612, 618
         }

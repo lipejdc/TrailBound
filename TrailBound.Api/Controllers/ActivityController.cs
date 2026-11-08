@@ -3,7 +3,8 @@ using TrailBound.Application.Dtos.Activity;
 using TrailBound.Application.Dtos.Pagination;
 using TrailBound.Application.Interfaces;
 using TrailBound.Domain.Entities;
-using TrailBound.KomootWrapper;
+using TrailBound.KomootWrapper.Enums;
+using TrailBound.KomootWrapper.Interfaces;
 
 namespace TrailBound.Api.Controllers;
 
@@ -11,44 +12,19 @@ namespace TrailBound.Api.Controllers;
 [ApiController]
 public class ActivityController(
     IActivityService activityService,
-    IActivityRepository activityRepository,
     IKomootClient komootClient,
     IConfiguration configuration) : ControllerBase
 {
     private readonly IActivityService _activityService = activityService;
     private readonly IKomootClient _komootClient = komootClient;
     private readonly IConfiguration _configuration = configuration;
-    private readonly IActivityRepository _activityRepository = activityRepository;
 
-    [HttpGet]
+    [HttpPost("activities")]
     public async Task<ActionResult<PaginatedResult<Activity>>> GetAllActivities(
-        int pageNumber, 
-        int pageSize, 
-        string? searchFilter,
-        string? activityTypeFilter,
-        DateTimeOffset? startDateFilter,
-        DateTimeOffset? endDateFilter,
-        TimeSpan minDurationFilter,
-        TimeSpan maxDurationFilter,
-        int minDistanceFilter,
-        int maxDistanceFilter
+        [FromBody] ActivityPaginationFilter paginationFilter
         )
     {
-        var paginationFilter = new ActivityPaginationFilter
-        {
-            PageNumber = pageNumber,
-            PageSize = pageSize,
-            Title = searchFilter,
-            ActivityType = activityTypeFilter,
-            StartDate = startDateFilter ?? DateTimeOffset.MinValue,
-            EndDate = endDateFilter ?? DateTimeOffset.MaxValue,
-            MinimalDuration = minDurationFilter,
-            MaximalDuration = maxDurationFilter,
-            MinimalDistanceInMeters = minDistanceFilter,
-            MaximalDistanceInMeters = maxDistanceFilter
-        };
-
-        var activities = await _activityRepository.GetAllAsync(paginationFilter);
+        var activities = await _activityService.GetActivitiesAsync(paginationFilter);
         return Ok(activities);
     }
 

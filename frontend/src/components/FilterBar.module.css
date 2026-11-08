@@ -1,8 +1,7 @@
 .bar {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .group {
@@ -49,6 +48,91 @@
   outline-offset: 2px;
 }
 
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.search {
+  width: 100%;
+  max-width: 360px;
+  padding: 8px 14px;
+  border: 1.5px solid #D4D9D0;
+  border-radius: 20px;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #6B6860;
+}
+
+.search:focus-visible {
+  outline: 2px solid #4A6741;
+  outline-offset: 2px;
+}
+
+.ranges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 2px 12px 8px;
+  border: 1.5px solid #D4D9D0;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #6B6860;
+}
+
+.field legend {
+  padding: 0 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.field input {
+  width: 64px;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+}
+
+.field input[type='date'] {
+  width: 110px;
+}
+
+.field input:focus-visible {
+  outline: 2px solid #4A6741;
+  outline-offset: 2px;
+}
+
+.invalid {
+  border-color: #C0392B;
+}
+
+.reset {
+  padding: 6px 4px;
+  border: none;
+  background: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  color: #4A6741;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media (max-width: 600px) {
   .divider { display: none; }
+  .field { width: 100%; }
+  .field input,
+  .field input[type='date'] { flex: 1; width: auto; }
 }

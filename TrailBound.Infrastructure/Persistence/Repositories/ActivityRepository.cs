@@ -2,7 +2,6 @@
 using TrailBound.Application.Dtos.Pagination;
 using TrailBound.Application.Interfaces;
 using TrailBound.Domain.Entities;
-using TrailBound.Domain.Enums;
 using TrailBound.Infrastructure.Persistence.DatabaseContext;
 
 namespace TrailBound.Infrastructure.Repositories;
@@ -11,68 +10,55 @@ public class ActivityRepository(ApplicationDbContext context) : IActivityReposit
 {
     private readonly ApplicationDbContext _context = context;
 
-    public async Task<PaginatedResult<Activity>> GetAllAsync(
-        ActivityPaginationFilter paginationFilter,
-        CancellationToken cancellationToken = default)
+    public async Task<List<Activity>> GetAllAsync(
+    ActivityPaginationFilter filter,
+    CancellationToken cancellationToken = default)
     {
-        var activities = _context.Activities
-        .Include(a => a.Trip)
-        .AsNoTracking()
-        .AsQueryable();
+        var query = _context.Activities
+            .Include(a => a.Trip)
+            .AsNoTracking()
+            .AsQueryable();
 
-        if (!string.IsNullOrEmpty(paginationFilter.Title))
+        if (!string.IsNullOrWhiteSpace(filter.Title))
         {
-            activities = activities.Where(a => a.Title.Contains(paginationFilter.Title));
+            query = query.Where(a => EF.Functions.ILike(a.Title, $"%{filter.Title}%"));
         }
 
-        if (!string.IsNullOrEmpty(paginationFilter.ActivityType))
+        if (!string.IsNullOrWhiteSpace(filter.ActivityType))
         {
-            activities = activities.Where(a => a.Type.
-            ToString().
-            ToLower().
-            Contains(paginationFilter.ActivityType));
+            var type = filter.ActivityType.ToLower();
+            query = query.Where(a => a.Type.ToString().ToLower().Contains(type));
         }
 
-        if (paginationFilter.StartDate != DateTimeOffset.MinValue && paginationFilter.EndDate != DateTimeOffset.MaxValue)
+        if (filter.StartDate is { } start)
         {
-            activities = activities.Where(a => a.Date >= paginationFilter.StartDate 
-            && a.Date <= paginationFilter.EndDate);
+            var startUtc = start.UtcDateTime;
+            query = query.Where(a => a.Date >= startUtc);
         }
 
-        if (paginationFilter.MinimalDuration != TimeSpan.MinValue && paginationFilter.MaximalDuration != TimeSpan.MaxValue)
+        if (filter.EndDate is { } end)
         {
-            activities = activities.Where(a => a.Duration >= paginationFilter.MinimalDuration 
-            && a.Duration <= paginationFilter.MaximalDuration);
+            var endUtc = end.UtcDateTime;
+            query = query.Where(a => a.Date <= endUtc);
         }
 
-        if (paginationFilter.MinimalDistanceInMeters > 0 && paginationFilter.MaximalDistanceInMeters < int.MaxValue)
-        {
-            activities = activities.Where(a => a.Route.DistanceInMeters >= paginationFilter.MinimalDistanceInMeters
-            && a.Route.DistanceInMeters <= paginationFilter.MaximalDistanceInMeters);
-        }
+        if (filter.MinimalDuration is { } minDuration)
+            query = query.Where(a => a.Duration >= minDuration);
 
-        var count = activities.Count();
+        if (filter.MaximalDuration is { } maxDuration)
+            query = query.Where(a => a.Duration <= maxDuration);
 
-        if (count <= 0)
-        {
-            return new PaginatedResult<Activity>(
-                new List<Activity>(),
-                paginationFilter.PageNumber,
-                paginationFilter.PageSize,
-                count);
-        }
+        if (filter.MinimalDistanceInMeters is { } minDistance)
+            query = query.Where(a => a.Route.DistanceInMeters >= minDistance);
 
-        var paginatedActivities = activities
-            .Skip(paginationFilter.GetSkipCount())
-            .Take(paginationFilter.PageSize)
-            .ToList();
+        if (filter.MaximalDistanceInMeters is { } maxDistance)
+            query = query.Where(a => a.Route.DistanceInMeters <= maxDistance);
 
-        return new PaginatedResult<Activity>(
-            paginatedActivities, 
-            paginationFilter.PageNumber, 
-            paginationFilter.PageSize, 
-            count
-            );
+        return await query
+            .OrderByDescending(a => a.Date)
+            .Skip(filter.GetSkipCount())
+            .Take(filter.PageSize)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<Activity?> GetByIdAsync(int id)
