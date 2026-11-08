@@ -5,7 +5,7 @@ namespace TrailBound.Application.Interfaces;
 
 public interface IActivityRepository
 {
-    Task<PaginatedResult<Activity>> GetAllAsync(
+    Task<List<Activity>> GetAllAsync(
         ActivityPaginationFilter paginationFilter, 
         CancellationToken cancellationToken = default
         );
